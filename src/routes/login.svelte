@@ -1,20 +1,21 @@
 <script>
   import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+  import { goto } from "$app/navigation";
 
   let email = '';
   let password = '';
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
+        goto('/list', {replaceState: true});
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        window.alert(`Login unsuccessful\n${errorMessage}`);
       });
 
   }
