@@ -1,6 +1,5 @@
 <script>
   import "../app.scss";
-  import ""
   import { onMount } from "svelte";
   import { initializeApp } from "firebase/app";
 
