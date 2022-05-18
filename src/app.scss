@@ -2,9 +2,10 @@
 @import "styles/colors.scss";
 @import "styles/anchor.css";
 @import "styles/button";
+@import "styles/input";
 @import "styles/utility";
 
 body {
-    color: $primary-color;
+    color: $text-primary;
     background-color: $background-color;
 }

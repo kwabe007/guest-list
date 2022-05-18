@@ -33,7 +33,7 @@
     }
 
     tr {
-      border-bottom: 1px solid $secondary-color;
+      border-bottom: 1px solid $text-secondary;
     }
 
     td, th {
