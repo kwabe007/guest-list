@@ -1,15 +1,15 @@
 <script>
 </script>
 
-
 <main>
   <div class="form-container">
   <h1>Login</h1>
   <form>
     <label for="email">Email</label>
-    <input id="email" type="text">
+    <input class="mb-4" id="email" type="text">
     <label for="password">Password</label>
-    <input id="password" type="password">
+    <input class="mb-8" id="password" type="password">
+    <button class="mx-auto block button button--primary">Login</button>
   </form>
   </div>
 </main>
