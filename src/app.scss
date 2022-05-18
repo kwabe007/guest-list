@@ -1,0 +1,9 @@
+@import "styles/tailwind.css";
+@import "styles/colors.scss";
+@import "styles/anchor.css";
+@import "styles/utility";
+
+body {
+    color: $primary-color;
+    background-color: $background-color;
+}
