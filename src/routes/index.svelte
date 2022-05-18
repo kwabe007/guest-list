@@ -9,7 +9,7 @@
 <h1 class="mb-4">Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 <p class="secondary">Secondary</p>
-<table>
+<table class="guest-list">
   <tr>
     <th>Name</th>
     <th>Mark</th>
@@ -23,3 +23,19 @@
 
 </table>
 
+<style type="text/scss">
+  @import "../styles/colors";
+
+  .guest-list {
+      border-collapse: collapse;
+
+      tr {
+        padding: 16px 0;
+          border-bottom: 1px solid $secondary-color;
+      }
+
+    td {
+      padding: 16px;
+    }
+  }
+</style>
