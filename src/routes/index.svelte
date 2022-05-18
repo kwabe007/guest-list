@@ -6,35 +6,37 @@
   ]
 </script>
 
-<h1 class="mb-4">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<p class="secondary">Secondary</p>
-<table class="guest-list">
-  <tr>
-    <th>Name</th>
-    <th>Mark</th>
-  </tr>
-  {#each SAMPLE_GUEST_DATA as guest}
+<main class="max-w-5xl mx-auto">
+  <table class="guest-list">
     <tr>
-      <td>{guest.name}</td>
-      <td>{guest.isChecked}</td>
+      <th>Name</th>
+      <th>Mark</th>
     </tr>
-  {/each}
-
-</table>
+    {#each SAMPLE_GUEST_DATA as guest}
+      <tr>
+        <td>{guest.name}</td>
+        <td>{guest.isChecked}</td>
+      </tr>
+    {/each}
+  </table>
+</main>
 
 <style type="text/scss">
   @import "../styles/colors";
 
   .guest-list {
-      border-collapse: collapse;
+    border-collapse: collapse;
+    width: 100%;
 
-      tr {
-        padding: 16px 0;
-          border-bottom: 1px solid $secondary-color;
-      }
+    th {
+      text-align: left;
+    }
 
-    td {
+    tr {
+      border-bottom: 1px solid $secondary-color;
+    }
+
+    td, th {
       padding: 16px;
     }
   }
