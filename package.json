@@ -36,6 +36,7 @@
   },
   "type": "module",
   "dependencies": {
-    "firebase": "^9.8.1"
+    "firebase": "^9.8.1",
+    "firebase-admin": "^10.2.0"
   }
 }

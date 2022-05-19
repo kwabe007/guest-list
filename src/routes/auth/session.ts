@@ -11,7 +11,4 @@ export const post: RequestHandler = ({ request }) => {
 
   if (scheme !== 'Bearer' || !token) return RESPONSE_INVALID;
 
-
-
-
 }
