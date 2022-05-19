@@ -1,6 +1,5 @@
 import { getApp, getApps, initializeApp } from 'firebase/app';
-import { getAuth, setPersistence, inMemoryPersistence } from 'firebase/auth';
-
+import { getAuth, setPersistence, inMemoryPersistence, signInWithEmailAndPassword } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,6 +19,12 @@ export function getClientApp() {
   setPersistence(auth, inMemoryPersistence);
 }
 
-export function login(email: string, password: string) {
+export async function login(email: string, password: string) {
   const auth = getAuth(getClientApp());
+  const credential = await signInWithEmailAndPassword(auth, email, password);
+  const token = await credential.user.getIdToken();
+  return fetch('/auth/session', {
+    method: 'POST',
+    headers: new Headers({ 'Authorization': `Bearer ${token}`}),
+  }).then((response) => response.json())
 }
