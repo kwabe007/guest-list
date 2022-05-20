@@ -24,3 +24,15 @@ export const createSessionCookie = (token: string, maxAge: number) => {
   const session = auth.createSessionCookie(token, {expiresIn});
   return `session=${session}; SameSite=Strict; path=/; HttpOnly; Secure; Max-Age=${expiresIn}`;
 }
+
+export const getIdTokenFromSessionCookie = async (sessionCookie: string | null) => {
+  if (!sessionCookie) return null;
+
+  const auth = getAuth(getAdminApp());
+  try {
+    return await auth.verifySessionCookie(sessionCookie, true);
+  } catch {
+    return null;
+  }
+
+}

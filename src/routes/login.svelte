@@ -1,7 +1,7 @@
 <script>
   import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
   import { goto } from "$app/navigation";
-  import { login } from "$lib/firebase";
+  import { login } from "$lib/firebaseClient";
 
   let email = '';
   let password = '';
