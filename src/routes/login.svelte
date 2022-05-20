@@ -9,18 +9,18 @@
 </script>
 
 <script>
-  import { login } from "$lib/auth";
   import { setUser } from "$lib/stores/user";
   import { goto } from "$app/navigation";
   import { session } from "$app/stores";
+  import { logIn } from "../lib/auth.js";
 
   let email = '';
   let password = '';
-  // let sessionValue = $session;
+  $session; // Subscribe to the session store before setting user.
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const user = await login(email, password);
+    const user = await logIn(email, password);
     setUser(user);
     await goto('/');
   }

@@ -10,10 +10,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 }
 
 export const getSession: GetSession = ({locals}) => {
+
   const user = locals.idToken ? {
     id: locals.idToken.sub,
     email: locals.idToken.email,
   } : null;
-
   return { user };
 }

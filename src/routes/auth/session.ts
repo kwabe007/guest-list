@@ -32,3 +32,14 @@ export const post: RequestHandler = async ({ request }) => {
     return RESPONSE_INVALID_TOKEN;
   }
 }
+
+const EXPIRED_COOKIE = 'session=; SameSite=Strict; Path=/; HttpOnly; Max-Age=0;'
+
+export const del: RequestHandler = () => {
+  return {
+    status: 200,
+    headers: {
+      'Set-Cookie': EXPIRED_COOKIE,
+    },
+  }
+}

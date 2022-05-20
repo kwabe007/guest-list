@@ -1,8 +1,9 @@
 import type {User} from "../types";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
 import {getClientApp} from "./firebaseClient";
+import {setUser} from "./stores/user";
 
-export async function login(email: string, password: string): Promise<User> {
+export async function logIn(email: string, password: string): Promise<User> {
   const auth = getAuth(getClientApp());
   const credential = await signInWithEmailAndPassword(auth, email, password);
   const token = await credential.user.getIdToken();
@@ -12,4 +13,11 @@ export async function login(email: string, password: string): Promise<User> {
   }).then((response) => response.json())
 
   return user;
+}
+
+export async function logOut() {
+  await fetch('/auth/session', {
+    method: 'DELETE',
+  })
+  setUser(null);
 }
