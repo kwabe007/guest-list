@@ -18,10 +18,10 @@ export const verifyIdToken = (token: string) => {
   return auth.verifyIdToken(token);
 }
 
-export const createSessionCookie = (token: string, maxAge: number) => {
+export const createSessionCookie = async (token: string, maxAge: number) => {
   const expiresIn = maxAge * 1000;
   const auth = getAuth(getAdminApp());
-  const session = auth.createSessionCookie(token, {expiresIn});
+  const session = await auth.createSessionCookie(token, {expiresIn});
   return `session=${session}; SameSite=Strict; path=/; HttpOnly; Secure; Max-Age=${expiresIn}`;
 }
 

@@ -17,12 +17,12 @@ export const post: RequestHandler = async ({ request }) => {
   try {
     const decodedIdToken = await verifyIdToken(token);
     const { sub, email } = decodedIdToken;
-    const userInfo = { id: sub, email };
-    const sessionCookie = createSessionCookie(token, ONE_WEEK_IN_SECONDS);
+    const user = { id: sub, email };
+    const sessionCookie = await createSessionCookie(token, ONE_WEEK_IN_SECONDS);
 
     return {
       status: 200,
-      body: userInfo,
+      body: user,
       headers: {
         'Set-Cookie': sessionCookie,
       }

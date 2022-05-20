@@ -1,14 +1,14 @@
 import { session } from "$app/stores";
-import {derived, Writable} from "svelte/store";
-import {UserInfo} from "../../types";
+import {derived, type Writable} from "svelte/store";
+import type {User} from "../../types";
 
-export const user = derived<Writable<App.Session>, UserInfo>(
+export const user = derived<Writable<App.Session>, User>(
   session,
   ($session, set) => {
     set($session.user);
   }
 )
 
-export const setUser = (user: UserInfo | null) => {
+export const setUser = (user: User | null) => {
   session.update(($session) => ({ ...$session, user }));
 }

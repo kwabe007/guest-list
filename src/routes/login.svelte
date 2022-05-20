@@ -1,18 +1,28 @@
+<script context="module" lang="ts">
+  import type {Load} from '@sveltejs/kit';
+
+  export const load: Load = ({session}) => {
+    if (session.user) return {redirect: '/', status: 302};
+
+    return { status: 200 };
+  }
+</script>
+
 <script>
   import { login } from "$lib/auth";
   import { setUser } from "$lib/stores/user";
   import { goto } from "$app/navigation";
+  import { session } from "$app/stores";
 
   let email = '';
   let password = '';
+  // let sessionValue = $session;
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const userInfo = await login(email, password).then((userCredentials) => {
-      console.log(userCredentials);
-    })
-    setUser(userInfo);
-    goto('/');
+    const user = await login(email, password);
+    setUser(user);
+    await goto('/');
   }
 </script>
 
