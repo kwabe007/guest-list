@@ -1,16 +1,18 @@
 <script>
-  import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+  import { login } from "$lib/auth";
+  import { setUser } from "$lib/stores/user";
   import { goto } from "$app/navigation";
-  import { login } from "$lib/firebaseClient";
 
   let email = '';
   let password = '';
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    login(email, password).then((userCredentials) => {
+    const userInfo = await login(email, password).then((userCredentials) => {
       console.log(userCredentials);
     })
+    setUser(userInfo);
+    goto('/');
   }
 </script>
 

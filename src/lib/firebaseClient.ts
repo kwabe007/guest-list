@@ -18,13 +18,3 @@ export function getClientApp() {
   const auth = getAuth(app);
   setPersistence(auth, inMemoryPersistence);
 }
-
-export async function login(email: string, password: string) {
-  const auth = getAuth(getClientApp());
-  const credential = await signInWithEmailAndPassword(auth, email, password);
-  const token = await credential.user.getIdToken();
-  return fetch('/auth/session', {
-    method: 'POST',
-    headers: new Headers({ 'Authorization': `Bearer ${token}`}),
-  }).then((response) => response.json())
-}
