@@ -27,12 +27,6 @@
   import { logOut } from "../lib/auth.js";
   import { goto } from "$app/navigation";
 
-  const SAMPLE_GUEST_DATA = [
-    {name: "Lárus Aemilianus", isChecked: false},
-    {name: "Finees Milana", isChecked: false},
-    {name: "Mandla Atalanta", isChecked: true},
-  ]
-
   export let user;
   export let guests;
 
