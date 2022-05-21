@@ -7,7 +7,7 @@
     if (!session?.user) return RESPONSE_REDIRECT;
     const user = session.user;
 
-    const res = await fetch('/guests');
+    const res = await fetch('/guests.json');
 
     if (res.ok) {
       const guests = await res.json();
@@ -38,7 +38,7 @@
 
   async function handleClickCheckIn(guest: Guest) {
     await fetch(
-      `/guests/${guest.id}`,
+      `/guests/${guest.id}.json`,
       {
         method: 'PATCH',
         body: JSON.stringify({ checkedIn: true }),

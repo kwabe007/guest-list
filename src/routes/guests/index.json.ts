@@ -1,5 +1,5 @@
 import type {RequestHandler} from "@sveltejs/kit";
-import {getAdminApp} from "../lib/firebaseAdmin";
+import {getAdminApp} from "../../lib/firebaseAdmin";
 import {getFirestore} from "firebase-admin/firestore";
 
 export const get: RequestHandler = async () => {
