@@ -23,16 +23,28 @@
   }
 </script>
 
-<script>
+<script lang="ts">
   import { logOut } from "../lib/auth.js";
   import { goto } from "$app/navigation";
+  import type { Guest, User } from "../types";
 
-  export let user;
-  export let guests;
+  export let user: User;
+  export let guests: Guest[];
 
   async function handleClickLogout() {
     await logOut();
     await goto('/login');
+  }
+
+  async function handleClickCheckIn(guest: Guest) {
+    await fetch(
+      `/guests/${guest.id}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ checkedIn: true }),
+        headers: { 'Content-Type': 'application/json'},
+      },
+    );
   }
 </script>
 
@@ -46,7 +58,7 @@
     {#each guests as guest}
       <tr>
         <td>{guest.name}</td>
-        <td><button class="button button--primary">Check in</button></td>
+        <td><button on:click={() => handleClickCheckIn(guest)} class="button button--primary">Check in</button></td>
       </tr>
     {/each}
   </table>

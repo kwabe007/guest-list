@@ -6,7 +6,7 @@ export const get: RequestHandler = async () => {
   const db = getFirestore(getAdminApp());
   const querySnap = await db.collection('guests').get();
   const guests = querySnap.docs.map((doc) => {
-    return { ...doc.data() };
+    return { ...doc.data(), id: doc.id };
   });
 
   return {
