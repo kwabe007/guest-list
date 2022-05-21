@@ -41,7 +41,7 @@
       `/guests/${guest.id}.json`,
       {
         method: 'PATCH',
-        body: JSON.stringify({ checkedIn: true }),
+        body: JSON.stringify({ isCheckedIn: true }),
         headers: { 'Content-Type': 'application/json'},
       },
     );
