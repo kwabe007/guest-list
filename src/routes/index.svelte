@@ -3,14 +3,22 @@
 
   const RESPONSE_REDIRECT = {redirect: '/login', status: 302};
 
-  export const load: Load = ({session}) => {
+  export const load: Load = async ({ fetch, session}) => {
     if (!session?.user) return RESPONSE_REDIRECT;
+    const user = session.user;
 
+    const res = await fetch('/guests');
+
+    if (res.ok) {
+      const guests = await res.json();
+      return {
+        props: { guests, user }
+      };
+    }
+
+    const { message } = await res.json();
     return {
-      props: {
-        user: session.user,
-      },
-      status: 200
+      error: new Error(message)
     };
   }
 </script>
@@ -26,6 +34,7 @@
   ]
 
   export let user;
+  export let guests;
 
   async function handleClickLogout() {
     await logOut();
@@ -41,7 +50,7 @@
       <th>Name</th>
       <th>Mark</th>
     </tr>
-    {#each SAMPLE_GUEST_DATA as guest}
+    {#each guests as guest}
       <tr>
         <td>{guest.name}</td>
         <td>{guest.isChecked}</td>
