@@ -13,4 +13,3 @@ export const patch: RequestHandler = async ({params, request}) => {
     status: 204,
   }
 }
-

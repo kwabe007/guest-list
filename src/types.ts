@@ -6,5 +6,5 @@ export interface User {
 export interface Guest {
   id: string;
   name: string;
-  isChecked: boolean;
+  isCheckedIn: boolean;
 }

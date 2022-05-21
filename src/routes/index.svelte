@@ -3,7 +3,7 @@
 
   const RESPONSE_REDIRECT = {redirect: '/login', status: 302};
 
-  export const load: Load = async ({ fetch, session}) => {
+  export const load: Load = async ({fetch, session}) => {
     if (!session?.user) return RESPONSE_REDIRECT;
     const user = session.user;
 
@@ -12,11 +12,11 @@
     if (res.ok) {
       const guests = await res.json();
       return {
-        props: { guests, user }
+        props: {guests, user}
       };
     }
 
-    const { message } = await res.json();
+    const {message} = await res.json();
     return {
       error: new Error(message)
     };
@@ -24,9 +24,11 @@
 </script>
 
 <script lang="ts">
-  import { logOut } from "../lib/auth.js";
-  import { goto } from "$app/navigation";
-  import type { Guest, User } from "../types";
+  import {logOut} from "../lib/auth.js";
+  import {goto} from "$app/navigation";
+  import type {Guest, User} from "../types";
+  import CheckIcon from "../lib/components/Icon.svelte";
+  import Icon from "@iconify/svelte";
 
   export let user: User;
   export let guests: Guest[];
@@ -36,29 +38,45 @@
     await goto('/login');
   }
 
-  async function handleClickCheckIn(guest: Guest) {
+  async function handleClickCheckIn(clickedGuest: Guest) {
     await fetch(
-      `/guests/${guest.id}.json`,
+      `/guests/${clickedGuest.id}.json`,
       {
         method: 'PATCH',
-        body: JSON.stringify({ isCheckedIn: true }),
-        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({isCheckedIn: true}),
+        headers: {'Content-Type': 'application/json'},
       },
     );
+    guests = guests.map((guest) => {
+      if (guest.id === clickedGuest.id) {
+        return {...clickedGuest, isCheckedIn: true};
+      }
+    })
   }
 </script>
 
 <main class="max-w-5xl mx-auto">
-  <p>Welcome, {user.email} <button on:click={handleClickLogout}>Logout</button></p>
+  <p>Welcome, {user.email}
+    <button on:click={handleClickLogout}>Logout</button>
+  </p>
   <table class="guest-list">
     <tr>
-      <th>Name</th>
-      <th>Mark</th>
+      <th class="text-left">Name</th>
+      <th>Status</th>
     </tr>
     {#each guests as guest}
       <tr>
         <td>{guest.name}</td>
-        <td><button on:click={() => handleClickCheckIn(guest)} class="button button--primary">Check in</button></td>
+        <td>
+          {#if !guest.isCheckedIn}
+            <button on:click={() => handleClickCheckIn(guest)} class="button button--primary">Check in</button>
+          {:else}
+            <span class="check-icon"> <Icon class="mx-auto" icon="ic:baseline-check"/> </span>
+          {/if}
+        </td>
+        <td class="text-center">
+          <span class="icon"> <Icon icon="zondicons:dots-horizontal-triple"/> </span>
+        </td>
       </tr>
     {/each}
   </table>
@@ -71,10 +89,6 @@
     border-collapse: collapse;
     width: 100%;
 
-    th {
-      text-align: left;
-    }
-
     tr {
       border-bottom: 1px solid $text-secondary;
     }
@@ -82,6 +96,10 @@
     td, th {
       padding: 16px;
     }
+  }
+
+  .check-icon {
+    color: green;
   }
 
   .button {
