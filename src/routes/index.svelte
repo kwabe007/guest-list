@@ -29,6 +29,7 @@
   import type {Guest, User} from "../types";
   import CheckIcon from "../lib/components/Icon.svelte";
   import Icon from "@iconify/svelte";
+  import Dropdown from "../lib/components/Dropdown.svelte";
 
   export let user: User;
   export let guests: Guest[];
@@ -75,7 +76,7 @@
           {/if}
         </td>
         <td class="text-center">
-          <span class="icon"> <Icon icon="zondicons:dots-horizontal-triple"/> </span>
+          <Dropdown isCheckedIn={guest.isCheckedIn}/>
         </td>
       </tr>
     {/each}
