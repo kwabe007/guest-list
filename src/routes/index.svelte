@@ -1,8 +1,11 @@
 <script context="module" lang="ts">
   import type {Load} from '@sveltejs/kit';
 
+  const RESPONSE_REDIRECT = {redirect: '/login', status: 302};
+
   export const load: Load = ({session}) => {
-    if (!session?.user) return {redirect: '/login', status: 302};
+    if (!session?.user) return RESPONSE_REDIRECT;
+
     return {
       props: {
         user: session.user,
