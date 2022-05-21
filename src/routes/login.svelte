@@ -31,9 +31,9 @@
   <h1>Login</h1>
   <form on:submit={handleSubmit}>
     <label for="email">Email</label>
-    <input bind:value={email} class="mb-4" id="email" type="text">
+    <input bind:value={email} class="mb-4" id="email" type="text" autocomplete="email">
     <label for="password">Password</label>
-    <input bind:value={password} class="mb-8" id="password" type="password">
+    <input bind:value={password} class="mb-8" id="password" type="password" autocomplete="current-password">
     <button class="mx-auto block button button--primary">Login</button>
   </form>
   </div>

@@ -34,7 +34,6 @@
     await logOut();
     await goto('/login');
   }
-
 </script>
 
 <main class="max-w-5xl mx-auto">
@@ -47,7 +46,7 @@
     {#each guests as guest}
       <tr>
         <td>{guest.name}</td>
-        <td>{guest.isChecked}</td>
+        <td><button class="button button--primary">Check in</button></td>
       </tr>
     {/each}
   </table>
@@ -71,5 +70,9 @@
     td, th {
       padding: 16px;
     }
+  }
+
+  .button {
+
   }
 </style>
