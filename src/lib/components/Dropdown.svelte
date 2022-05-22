@@ -52,10 +52,10 @@
           rounded shadow-md z-10"
       >
         <button class="block w-full" on:click={() => {show = false; onUncheck()}}>
-          <div class="ml-auto pl-4 py-2 text-left">Uncheck</div>
+          <span class="block ml-auto pl-4 py-2 text-left">Uncheck</span>
         </button>
         <button class="block w-full"  on:click={() => {show = false; onDelete()}}>
-          <div class="ml-auto pl-4 py-2 text-left text-red-600">Delete</div>
+          <span class="block ml-auto pl-4 py-2 text-left text-red-600">Delete</span>
         </button>
       </div>
     {/if}

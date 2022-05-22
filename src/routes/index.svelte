@@ -27,7 +27,6 @@
   import {logOut} from "../lib/auth.js";
   import {goto} from "$app/navigation";
   import type {Guest, User} from "../types";
-  import CheckIcon from "../lib/components/Icon.svelte";
   import Icon from "@iconify/svelte";
   import Dropdown from "../lib/components/Dropdown.svelte";
 
@@ -51,6 +50,26 @@
     guests = guests.map((guest) => {
       if (guest.id === clickedGuest.id) {
         return {...clickedGuest, isCheckedIn: true};
+      } else {
+        return guest;
+      }
+    })
+  }
+
+  async function handleUncheck(uncheckedGuest: Guest) {
+    await fetch(
+      `/guests/${uncheckedGuest.id}.json`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({isCheckedIn: false}),
+        headers: {'Content-Type': 'application/json'},
+      },
+    );
+    guests = guests.map((guest) => {
+      if (guest.id === uncheckedGuest.id) {
+        return {...uncheckedGuest, isCheckedIn: false};
+      } else {
+        return guest;
       }
     })
   }
@@ -76,7 +95,7 @@
           {/if}
         </td>
         <td class="text-center">
-          <Dropdown isCheckedIn={guest.isCheckedIn}/>
+          <Dropdown isCheckedIn={guest.isCheckedIn} onUncheck={() => handleUncheck(guest)}/>
         </td>
       </tr>
     {/each}
