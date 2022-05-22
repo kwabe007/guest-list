@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
   import type {Load} from '@sveltejs/kit';
+  import type {Guest} from "../types";
 
   const RESPONSE_REDIRECT = {redirect: '/login', status: 302};
 
@@ -10,9 +11,13 @@
     const res = await fetch('/guests.json');
 
     if (res.ok) {
-      const guests = await res.json();
+      const guestArray = await res.json();
+      const guestMap = guestArray.reduce((map, guest) => {
+        map.set(guest.id, guest);
+        return map;
+      }, new Map<string, Guest>())
       return {
-        props: {guests, user}
+        props: {guests: guestMap, user}
       };
     }
 
@@ -27,30 +32,34 @@
   import {logOut} from "../lib/auth.js";
   import {goto} from "$app/navigation";
   import Fuse from "fuse.js";
-  import type {Guest, User} from "../types";
+  import type {User} from "../types";
   import Icon from "@iconify/svelte";
   import Dropdown from "../lib/components/Dropdown.svelte";
   import {session} from "$app/stores";
   import {onMount} from "svelte";
 
   export let user: User;
-  export let guests: Guest[];
+  export let guests: Map<string, Guest>;
   $session; // We subscribe to the session before it is used in logout;
   let searchString;
   let searchResults;
   let fuse; // TODO: Update fuse list on guests change
-  $: filteredGuests = guests.filter((guest) => {
-    if (!searchString || !searchResults) return true;
-
-    return searchResults.map((res) => res.item.id).includes(guest.id);
-  })
+  let filteredGuests;
+  $: {
+    if (!searchResults) {
+      filteredGuests = Array.from(guests.values());
+    } else {
+      filteredGuests = searchResults.map((res) => guests.get(res.item.id));
+    }
+  }
 
   onMount(async () => {
     const options = {
       includeScore: true,
       keys: ['name'],
+      threshold: 0.4
     }
-    fuse = new Fuse(guests, options);
+    fuse = new Fuse<Guest>(Array.from(guests.values()), options);
   });
 
   async function handleLogoutClick() {
@@ -67,17 +76,12 @@
         headers: {'Content-Type': 'application/json'},
       },
     );
-    guests = guests.map((guest) => {
-      if (guest.id === clickedGuest.id) {
-        return {...clickedGuest, isCheckedIn: true};
-      } else {
-        return guest;
-      }
-    })
+
+    guests = new Map(guests).set(clickedGuest.id, { ...clickedGuest, isCheckedIn: true });
   }
 
   function handleSearchInput() {
-    searchResults = fuse.search(searchString);
+    searchResults = searchString ? fuse.search(searchString) : undefined;
   }
 
   async function handleUncheck(uncheckedGuest: Guest) {
@@ -89,13 +93,7 @@
         headers: {'Content-Type': 'application/json'},
       },
     );
-    guests = guests.map((guest) => {
-      if (guest.id === uncheckedGuest.id) {
-        return {...uncheckedGuest, isCheckedIn: false};
-      } else {
-        return guest;
-      }
-    })
+    guests = new Map(guests).set(uncheckedGuest.id, { ...uncheckedGuest, isCheckedIn: false });
   }
 </script>
 
