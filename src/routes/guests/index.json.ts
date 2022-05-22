@@ -14,3 +14,21 @@ export const get: RequestHandler = async () => {
     body: guests,
   }
 }
+
+export const post: RequestHandler = async ({ request}) => {
+  const guestNames: string[] = await request.json();
+
+  const db = getFirestore(getAdminApp());
+  const batch = db.batch();
+
+  guestNames.forEach((name) => {
+    const newGuestRef = db.collection('guests').doc();
+    batch.set(newGuestRef, { name, isCheckedIn: false });
+  })
+
+  await batch.commit();
+
+  return {
+    status: 204,
+  }
+}
