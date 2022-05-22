@@ -26,7 +26,7 @@
 <script lang="ts">
   import {logOut} from "../lib/auth.js";
   import {goto} from "$app/navigation";
-  import {Index} from "flexsearch";
+  import Fuse from "fuse.js";
   import type {Guest, User} from "../types";
   import Icon from "@iconify/svelte";
   import Dropdown from "../lib/components/Dropdown.svelte";
@@ -36,22 +36,29 @@
   export let user: User;
   export let guests: Guest[];
   $session; // We subscribe to the session before it is used in logout;
-  let index;
+  let searchString;
   let searchResults;
+  let fuse; // TODO: Update fuse list on guests change
+  $: filteredGuests = guests.filter((guest) => {
+    if (!searchString || !searchResults) return true;
+
+    return searchResults.map((res) => res.item.id).includes(guest.id);
+  })
 
   onMount(async () => {
-    index = new Index();
-    guests.forEach((guest) => {
-      index.add(guest.id, guest.name);
-    })
+    const options = {
+      includeScore: true,
+      keys: ['name'],
+    }
+    fuse = new Fuse(guests, options);
   });
 
-  async function handleClickLogout() {
+  async function handleLogoutClick() {
     await logOut();
     await goto('/login');
   }
 
-  async function handleClickCheckIn(clickedGuest: Guest) {
+  async function handleCheckInClick(clickedGuest: Guest) {
     await fetch(
       `/guests/${clickedGuest.id}.json`,
       {
@@ -67,6 +74,10 @@
         return guest;
       }
     })
+  }
+
+  function handleSearchInput() {
+    searchResults = fuse.search(searchString);
   }
 
   async function handleUncheck(uncheckedGuest: Guest) {
@@ -89,8 +100,13 @@
 </script>
 
 <main class="max-w-5xl mx-auto">
+  <input bind:value={searchString} on:input={handleSearchInput} class="mb-4" id="searchGuestName" type="text"/>
+  <div>
+    {searchResults}
+  </div>
+
   <p>Welcome, {user.email}
-    <button on:click={handleClickLogout}>Logout</button>
+    <button on:click={handleLogoutClick}>Logout</button>
   </p>
   <table class="guest-list">
     <colgroup>
@@ -102,12 +118,12 @@
       <th class="text-left pl-4">Name</th>
       <th>Status</th>
     </tr>
-    {#each guests as guest}
+    {#each filteredGuests as guest}
       <tr>
         <td class="text-left pl-4">{guest.name}</td>
         <td class="text-center">
           {#if !guest.isCheckedIn}
-            <button on:click={() => handleClickCheckIn(guest)} class="button button--primary">Check in</button>
+            <button on:click={() => handleCheckInClick(guest)} class="button button--primary">Check in</button>
           {:else}
             <span class="check-icon"> <Icon class="mx-auto" icon="ic:baseline-check"/> </span>
           {/if}

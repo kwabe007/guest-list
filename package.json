@@ -41,6 +41,6 @@
   "dependencies": {
     "firebase": "^9.8.1",
     "firebase-admin": "^10.2.0",
-    "flexsearch": "^0.7.21"
+    "fuse.js": "^6.6.2"
   }
 }
