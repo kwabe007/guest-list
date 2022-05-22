@@ -100,14 +100,19 @@
 </script>
 
 <main class="max-w-5xl mx-auto">
-  <input bind:value={searchString} on:input={handleSearchInput} class="mb-4" id="searchGuestName" type="text"/>
-  <div>
-    {searchResults}
+  <input
+    class="search mb-4"
+    bind:value={searchString}
+    on:input={handleSearchInput}
+    id="searchGuestName"
+    type="text"
+    placeholder="Enter name to search for"
+  />
+
+  <div class="logout-button-container">
+    <button class="logout-button" on:click={handleLogoutClick}>Logout</button>
   </div>
 
-  <p>Welcome, {user.email}
-    <button on:click={handleLogoutClick}>Logout</button>
-  </p>
   <table class="guest-list">
     <colgroup>
       <col style="width: 45%;">
@@ -138,6 +143,19 @@
 
 <style type="text/scss">
   @import "../styles/colors";
+
+  .search {
+    width: 100%;
+    height: 4rem;
+    padding: 0 1rem;
+  }
+
+  .logout-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    padding-right: 1rem;
+  }
 
   .guest-list {
     border-collapse: collapse;
