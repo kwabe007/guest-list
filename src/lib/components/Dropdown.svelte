@@ -5,7 +5,6 @@
 
   export let onDelete = () => undefined;
   export let onUncheck = () => undefined;
-  export let isCheckedIn;
 
   let show = false; // menu state
   let menu = null; // menu wrapper DOM reference

@@ -32,13 +32,11 @@
   import {logOut} from "../lib/auth.js";
   import {goto} from "$app/navigation";
   import Fuse from "fuse.js";
-  import type {User} from "../types";
   import Icon from "@iconify/svelte";
   import Dropdown from "../lib/components/Dropdown.svelte";
   import {session} from "$app/stores";
   import {onMount} from "svelte";
 
-  export let user: User;
   export let guests: Map<string, Guest>;
   $session; // We subscribe to the session before it is used in logout;
   let searchString;
