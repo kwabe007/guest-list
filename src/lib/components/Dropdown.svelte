@@ -6,8 +6,8 @@
   export let onDelete = () => undefined;
   export let onUncheck = () => undefined;
 
-  let show = false; // menu state
-  let menu = null; // menu wrapper DOM reference
+  let show = false;
+  let menu = null;
 
   onMount(() => {
     const handleOutsideClick = (event) => {
