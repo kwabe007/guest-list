@@ -80,14 +80,19 @@
     <button on:click={handleClickLogout}>Logout</button>
   </p>
   <table class="guest-list">
+    <colgroup>
+      <col style="width: 45%;">
+      <col style="width: 45%;">
+      <col style="width: 10%;">
+    </colgroup>
     <tr>
-      <th class="text-left">Name</th>
+      <th class="text-left pl-4">Name</th>
       <th>Status</th>
     </tr>
     {#each guests as guest}
       <tr>
-        <td>{guest.name}</td>
-        <td>
+        <td class="text-left pl-4">{guest.name}</td>
+        <td class="text-center">
           {#if !guest.isCheckedIn}
             <button on:click={() => handleClickCheckIn(guest)} class="button button--primary">Check in</button>
           {:else}
@@ -111,10 +116,10 @@
 
     tr {
       border-bottom: 1px solid $text-secondary;
+      height: 4rem;
     }
 
     td, th {
-      padding: 16px;
     }
   }
 
