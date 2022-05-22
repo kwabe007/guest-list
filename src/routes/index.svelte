@@ -26,14 +26,25 @@
 <script lang="ts">
   import {logOut} from "../lib/auth.js";
   import {goto} from "$app/navigation";
+  import {Index} from "flexsearch";
   import type {Guest, User} from "../types";
   import Icon from "@iconify/svelte";
   import Dropdown from "../lib/components/Dropdown.svelte";
   import {session} from "$app/stores";
+  import {onMount} from "svelte";
 
   export let user: User;
   export let guests: Guest[];
-  $session; // We subscribe to the session before it is used in logout.
+  $session; // We subscribe to the session before it is used in logout;
+  let index;
+  let searchResults;
+
+  onMount(async () => {
+    index = new Index();
+    guests.forEach((guest) => {
+      index.add(guest.id, guest.name);
+    })
+  });
 
   async function handleClickLogout() {
     await logOut();
