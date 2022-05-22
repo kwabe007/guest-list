@@ -29,9 +29,11 @@
   import type {Guest, User} from "../types";
   import Icon from "@iconify/svelte";
   import Dropdown from "../lib/components/Dropdown.svelte";
+  import {session} from "$app/stores";
 
   export let user: User;
   export let guests: Guest[];
+  $session; // We subscribe to the session before it is used in logout.
 
   async function handleClickLogout() {
     await logOut();
